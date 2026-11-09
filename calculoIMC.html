@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animação de Partículas Cadentes</title>
+<style>
+#containerIMC{width:600px; height:660px; background:rgb(220,220,220); padding-top:10px; margin:40px auto; border-radius:10px; box box-shadow:1px 1px 3px rgb(0,0,0,.5);}
+#campForm{width:500px; height:290px; background:; margin:10px auto; border-radius:10px; box box-shadow:1px 1px 3px rgb(0,0,0,.5);}
+.rotulo{display:block; text-transform:capitalize; font-family:sans-serif; font-size:16px; color:grey; margin-top:20px;}
+.campos{padding:6px 10px; font-size:16px; border-radius:5px; color:gray; width:480px; outline:none; border:1px solid rgb(0,0,0,.2);display: block}
+.campos::placeholder{color:rgb(0,0,0,.2);}
+#btn_calc_imc{padding:12px 50px; transition:0.3s all; background:blue; border:none; margin-top:30px; margin-left:0;position:absolute; border-radius:5px; cursor:pointer; color:white;}
+#btn_calc_imc:hover{background:rgb(0,150,250);}
+#tabela{border-collapse:collapse; width:500px; margin-left:50px; margin-top:20px; color:rgb(110,110,110);}
+.celulas{border:1px solid; padding:5px; text-transform:capitalize;}
+.celulas_rotulos{text-align:right; width:80px;}
+.celulas_resultados{text-align:left; }
+.listas_regras{font-size:13px; color:gray;}
+
+</style>
+</head>
+<body>
+    <div id="containerIMC">
+        <div id="campForm">
+            <label class="rotulo">nome</label>
+            <input type="" class="campos" id="camp_nome" name="" placeholder="digite seu nome">
+            <label class="rotulo">peso</label>
+            <input type="" class="campos" id="camp_peso" name="" style="width:200px;" placeholder="digite seu peso">
+            <label class="rotulo">altura</label>
+            <input type="" class="campos" id="camp_altura" value="1.60" maxlength="4" oninput="validarMetro()" name="" style="width:200px;" placeholder="digite sua altura">
+            <button id="btn_calc_imc" onclick="calcular()">calcMIC</button>
+           
+        </div>
+        <hr style="width:500px;">
+        <table id="tabela">
+            <tr>
+                <td class="celulas " colspan="2" style="text-align: center; background:rgb(0, 150, 255); color:white; border:1px solid rgb(110,110,110);">resultado do seu peso abaixo</td></td>
+            </tr>
+            <tr>                    
+                <td class="celulas celulas_rotulos">nome </td><td class="celulas celulas_resultados" id="cel_nome">não definido</td>
+            </tr>
+            <tr>
+                <td class="celulas celulas_rotulos">peso </td><td class="celulas celulas_resultados" id="cel_peso">não definido</td>
+            </tr>
+            <tr>   
+                <td class="celulas celulas_rotulos">altura </td><td class="celulas celulas_resultados" id="cel_alt">não definido</td>
+            </tr> 
+            <tr>
+                <td class="celulas celulas_rotulos">massa </td><td class="celulas celulas_resultados" id="cel_massa">não definido</td>
+            </tr> 
+            <tr>
+                <td class="celulas celulas_rotulos">situação </td><td class="celulas celulas_resultados" id="cel_situa">não definido</td>
+            </tr>
+        </table>
+        <ul style="margin-left:25px;">
+            <li class="listas_regras">massa abaixo 18 abaixo do peso normal</li>            
+            <li class="listas_regras">massa >= 18 e <= 24 peso normal</li>
+            <li class="listas_regras">massa > 24 e <= 35 acima do peso</li>
+            <li class="listas_regras">massa > 35 e <= 42 obesidade</li>
+            <li class="listas_regras">massa > 42 e <= 48 obesidade moderada</li>
+            <li class="listas_regras">massa > 48 e <= 56 obesidade severa</li>           
+            <li class="listas_regras">massa > 56 e <= 65 super obesidade</li> 
+        </ul>
+    </div>
+
+    <script>
+        var cNome;
+        var cPeso;
+        var cAltura;
+        function carregar(){
+            cNome = document.getElementById("camp_nome").value;
+            cPeso = document.getElementById("camp_peso").value;
+            cAltura = document.getElementById("camp_altura").value;            
+        }
+        function calcular(){
+            carregar()
+            var nomeComplet = cNome;
+            var seuPeso = cPeso;
+            var suaAltura = cAltura;
+            var calcImc = seuPeso / (suaAltura * suaAltura);
+            var massa = calcImc.toFixed(2)
+            var informados = "nome: " + nomeComplet + " - peso: " + seuPeso + "KG - altura: " + suaAltura + "metro - massa: " + massa;
+            cel_nome.innerHTML = cNome;
+            cel_peso.innerHTML = cPeso;
+            cel_alt.innerHTML = cAltura;
+            cel_massa.innerHTML = massa;
+            if(massa >= 18 && massa <= 24){cel_situa.innerHTML = "peso normal";}
+            else if(massa > 24 && massa <= 35){cel_situa.innerHTML = "acima do peso";}            
+            else if(massa > 35 && massa <= 42){cel_situa.innerHTML = "obesidade";} 
+            else if(massa > 42 && massa <= 48){cel_situa.innerHTML = "obesidade moderada";} 
+            else if(massa > 48 && massa <= 56){cel_situa.innerHTML = "obesidade severa";} 
+            else if(massa > 56 && massa <= 65){cel_situa.innerHTML = "super obesidade";} 
+            else if(massa < 18){cel_situa.innerHTML = "abaixo do peso";}
+            else{cel_situa.innerHTML = "mega obesidade";}
+        }
+        function validarMetro(){
+            carregar();
+            if(camp_altura.value.length == 1){camp_altura.value += ".";}
+           
+        }validarMetro()
+    </script>
+</body>
+</html>

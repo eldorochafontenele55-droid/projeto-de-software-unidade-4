@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animação de Partículas Cadentes</title>
+<style>
+#container_foca{width:900px; height:600px; background:rgb(220,220,220); padding-top:10px; margin:40px auto; border-radius:10px; box box-shadow:1px 1px 3px;} 
+.caixa_letras{width:30px; height:30px; text-align:center; font-size:18px; margin-left:5px; background:none; border:none; border-bottom:1px solid;}
+#quadro_controle{width:890px; height:520px; border:px solid; margin:10px auto; border-radius:px;}
+#lateral_esquerdo{width:250px; height:520px; float:left; border-right:1px solid gray; margin-left:0px; border-radius:px;}
+#quadro_btns{width:250px; height:250px; margin-left:-3px; border:1px solid;}
+.btn_mostrar{width:120px; height:30px; cursor:pointer; margin-top:10px;}
+.btn_letras{width:39.6px; height:39.6px; margin:1px; font-size:18px; cursor:pointer; font-family:sans-serif;}
+#lateral_direito{width:630px; height:520px; float:left; border:px solid; margin-left:5px; border-radius:px;}
+.btn_letra_achada{width:25px; height:25px; text-align:center; font-size:14px; margin-left:3px;}
+</style>
+</head>
+<body>
+    <div id="container_foca">
+        <div id="imprimir_letras" style="margin-top:20px; margin-left:10px;"></div>
+        <hr style="margin-top:10px;">
+        <div id="quadro_controle">
+            <div id="lateral_esquerdo">
+                <div id="quadro_btns"></div>
+                <button class="btn_mostrar" onclick="gerarPalavra()">gerar</button>
+                <button class="btn_mostrar" onclick="dica()">dica</button>  
+                <hr style="margin-top:20px;"> 
+                <span style="margin-left:3px;">acertou a letra: </span><br><span id="letra_acertados"></span>   
+                <hr style="margin-top:20px;"> 
+                <span style="margin-left:3px;">errou letra: </span><br><span id="letra_errados"></span>   
+                <br>
+                <hr>
+
+
+
+            </div>
+            <div id="lateral_direito">
+                
+            </div>
+
+        </div>
+    </div>
+
+<script>
+var palavras = [
+"goias", "santos", "vitória", "grêmio", "internacional", "vasco", "bahia", "fluminense", "paysandu", "guarani",
+"futebol", "natação", "corrida", "volêi", "futsal", "basquete", "ginástica", "tênis", "golfe", "boxe"
+];
+var letrasAlf = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "á", "ã","é", "ê", "í", "õ", "ô", "ú"];
+var palavrasAleatorio;
+var letraAchada = [];
+var letraErrada = [];
+var acertou = 0;
+// abaixo as letras dos botoes para escolher
+function letrasAlfabeto(){
+    for(var LAlfa = 0; LAlfa < letrasAlf.length; LAlfa++){
+        quadro_btns.innerHTML += "<button value=" + letrasAlf[LAlfa] +" class='btn_letras' onclick=selecionar('" + letrasAlf[LAlfa] + "')>" + letrasAlf[LAlfa] + "</button>";
+    }
+}
+letrasAlfabeto();
+// abaixo carregando e criado os campos de letras
+function carregarPalavras(){
+    palavrasAleatorio = Math.round(Math.random() * palavras.length);
+    for(var pal = 0; pal < palavras[palavrasAleatorio].length; pal++){
+        var criarCamposP = document.createElement("input");
+        criarCamposP.setAttribute("class", "caixa_letras");
+        criarCamposP.setAttribute("type", "text");
+        criarCamposP.setAttribute("disabled", "false");       
+        imprimir_letras.appendChild(criarCamposP);
+    }
+}
+carregarPalavras();
+var achado;
+function selecionar(letrasEscolhidas){
+    var vetorLetras = document.getElementsByClassName("caixa_letras");
+    var vetorBtns = document.getElementsByClassName("btn_letras");    
+    for(var l = 0; l < vetorBtns.length; l++){
+        if(letrasEscolhidas == palavras[palavrasAleatorio][l]){
+            vetorLetras[l].value = palavras[palavrasAleatorio][l];
+            vetorLetras[l].style.borderBottom = "none";
+            achado = true;
+        }
+        if(vetorBtns[l].value == letrasEscolhidas){vetorBtns[l].remove()}
+        
+    }
+    if(achado){
+        acertou++;
+        letraAchada.push(); alert("letra achado"); 
+        letra_acertados.innerHTML += "<button class='btn_letra_achada' style=''>" + letrasEscolhidas + "</button>"; 
+        achado = false;
+    }
+    else{letraErrada.push(); letra_errados.innerHTML += "<button class='btn_letra_achada' style=''>" + letrasEscolhidas + "</button>";alert("errou");}
+}
+function gerarPalavra(){
+    location.reload("jogo_da_foca.html");
+}
+function dica(){
+    for(var d = 0; d < palavras.length; d++){
+        if(palavrasAleatorio >=0 && palavrasAleatorio < 10){alert("time"); break;}    
+         if(palavrasAleatorio >=10 && palavrasAleatorio < 20){alert("esporte"); break;}           
+    }
+
+}
+</script>
+</body>
+</html>
